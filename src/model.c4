@@ -16,13 +16,11 @@ model {
     backend = node 'Backend Server' {
         openai_api = service 'OpenAI API Service' {
             description 'Provides unauthenticated API for frontend to use'
-            -> llama_sever 'uses'
-            -> manager 'uses'
+            -> scheduler 'sends tasks to'
         }
-        manager = service 'Inference Management Service' {
-            description 'Manages inference servers based on usage'
+        scheduler = service 'Scheduler' {
+            description 'Handles task scheduling and resource management'
             -> llama_sever 'manages'
-            -> tracker 'queries'
         }
         llama_sever = service 'llama-server' {
             description 'Provides inference'
@@ -31,6 +29,7 @@ model {
         }
         tracker = service 'Tracker Service' {
             description 'Tracks node availabilty'
+            -> scheduler 'sends updates to'
         }
     }
     phone = node 'Phone Node' {
