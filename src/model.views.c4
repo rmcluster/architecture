@@ -1,7 +1,8 @@
 views {
     view index {
         include *
-        include server.*
+        include backend.*
+        include frontend.*
         include phone.*
         include linux_client.*
     }
