@@ -1,16 +1,24 @@
 model {
     user = user 'User' {
         description 'User of the system'
-        -> webui 'uses'
-    }
-    webui = ui 'OpenWebUI' {
-        description 'Interface to the server'
-        -> frontend.openai_api 'uses'
+        -> web_ui 'interacts with'
     }
     frontend = node 'Frontend Server' {
         openai_api = service 'OpenAI API Service' {
             description 'Provides authenticated API for external use'
             -> backend.openai_api 'forwards requests to'
+        }
+
+        web_ui = ui 'Web UI' {
+            description 'Chat interface for user'
+            chat_ui = ui 'Chat UI' {
+                description 'Chat interface for user'
+                -> openai_api 'uses'
+            }
+            dashboard_ui = ui 'Dashboard UI' {
+                description 'Dashboard for monitoring nodes'
+                -> tracker 'uses'
+            }
         }
     }
     backend = node 'Backend Server' {
