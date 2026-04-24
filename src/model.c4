@@ -5,11 +5,17 @@ model {
     }
     webui = ui 'OpenWebUI' {
         description 'Interface to the server'
-        -> openai_api 'uses'
+        -> frontend.openai_api 'uses'
     }
-    server = node 'Server' {
+    frontend = node 'Frontend Server' {
         openai_api = service 'OpenAI API Service' {
-            description 'Industry standard API for external use'
+            description 'Provides authenticated API for external use'
+            -> backend.openai_api 'forwards requests to'
+        }
+    }
+    backend = node 'Backend Server' {
+        openai_api = service 'OpenAI API Service' {
+            description 'Provides unauthenticated API for frontend to use'
             -> llama_sever 'uses'
             -> manager 'uses'
         }
