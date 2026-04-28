@@ -2,6 +2,7 @@ model {
     user = user 'User' {
         description 'User of the system'
         -> web_ui 'interacts with'
+        -> storage_webdav 'interacts with'
     }
     frontend = node 'Frontend Server' {
         openai_api = service 'OpenAI API Service' {
@@ -37,12 +38,28 @@ model {
         tracker = service 'Tracker Service' {
             description 'Tracks node availabilty'
             -> scheduler 'sends updates to'
+            -> storage_service 'sends updates to'
+        }
+        storage_webdav = service 'Storage WebDAV Service' {
+            description 'Provides WebDAV access to storage'
+            -> storage_service 'forwards requests to'
+        }
+        storage_service = service 'Storage Service' {
+            description 'Internal data storage service'
+            -> content_addressible_storage 'uses'
+        }
+        content_addressible_storage = service 'Content Addressible Storage Service' {
+            description 'Content addressible storage for data chunks'
+            -> content_addressible_storage_service 'stores chunks in'
         }
     }
     node = node 'Node' {
         description 'Android/iOS/Linux nodes'
         rpc_server = service 'RPC Server' {
             description 'llama.cpp RPC server for inference'
+        }
+        content_addressible_storage_service = service 'Content Addressible Storage Service' {
+            description 'Content addressible storage for data chunks'
         }
         heartbeat = service 'Heartbeat Service' {
             description 'Sends heartbeat to tracker'
