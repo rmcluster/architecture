@@ -4,8 +4,7 @@ views {
         include backend.*
         include frontend.*
         include frontend.web_ui.*
-        include phone.*
-        include linux_client.*
+        include node.*
     }
 
     view high_level {
