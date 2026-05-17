@@ -2,7 +2,6 @@ model {
     user = user 'User' {
         description 'User of the system'
         -> web_ui 'interacts with'
-        -> storage_webdav 'interacts with'
     }
     frontend = node 'Frontend Server' {
         openai_api = service 'OpenAI API Service' {
@@ -11,10 +10,14 @@ model {
         }
 
         web_ui = ui 'Web UI' {
-            description 'Chat interface for user'
+            description 'Web interface for user'
             chat_ui = ui 'Chat UI' {
-                description 'Chat interface for user'
-                -> openai_api 'uses'
+                description 'LLM Chat interface for user'
+                -> openai_api 'performs inference via'
+            }
+            storage_ui = ui 'Storage UI' {
+                description 'Enables user to save/retrieve files'
+                -> storage_webdav 'stores data in'
             }
             dashboard_ui = ui 'Dashboard UI' {
                 description 'Dashboard for monitoring nodes'
