@@ -11,5 +11,6 @@ views {
 
     view high_level {
         include *
+        include backend.*
     }
 }
