@@ -10,7 +10,11 @@ views {
     }
 
     view high_level {
+        title "High Level Overview"
         include *
         include backend.*
+        style * {
+            textSize xl
+        }
     }
 }
