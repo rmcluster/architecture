@@ -4,10 +4,13 @@ views {
         include backend.*
         include frontend.*
         include frontend.web_ui.*
+        include backend.storage.*
+        include backend.llm_service.*
         include node.*
     }
 
     view high_level {
         include *
+        include backend.*
     }
 }
